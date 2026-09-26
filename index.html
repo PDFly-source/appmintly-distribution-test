@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AppMintly Distribution Test</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1b62d6">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #f4f7ff; color: #0d1b3e;
+         display: flex; flex-direction: column; align-items: center; justify-content: center;
+         min-height: 100vh; text-align: center; padding: 24px; box-sizing: border-box; }
+  .badge { background: #1b62d6; color: #fff; font-weight: 800; letter-spacing: 2px;
+           padding: 6px 14px; border-radius: 999px; font-size: 12px; }
+  h1 { margin: 16px 0 4px; font-size: 28px; }
+  .version { font-size: 20px; font-weight: 700; color: #1b62d6; margin: 8px 0 24px; }
+  .card { background: #fff; border: 1px solid #d7e0f5; border-radius: 16px; padding: 18px 22px;
+          box-shadow: 0 8px 24px rgba(27,98,214,.08); max-width: 420px; }
+  .row { margin: 10px 0; font-size: 14px; }
+  .label { color: #66789e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .value { font-weight: 700; }
+  .foot { margin-top: 20px; font-size: 11px; color: #8a97b8; }
+</style>
+</head>
+<body>
+  <span class="badge">DISTRIBUTION TEST</span>
+  <h1>AppMintly Distribution Test</h1>
+  <div class="version">Version <span id="version">1.0.0</span></div>
+  <div class="card">
+    <div class="row"><div class="label">Package</div><div class="value">com.appforge.disttest</div></div>
+    <div class="row"><div class="label">Device data (persists across updates)</div><div class="value" id="device-data">…</div></div>
+    <div class="row"><div class="label">Origin</div><div class="value">appmintly-distribution-test</div></div>
+  </div>
+  <p class="foot">Temporary pipeline test app — not a production application.</p>
+  <script>
+    // Update-persistence probe: initialized once, must survive an app update
+    // (WebView app data persists across adb install -r / package updates).
+    (function () {
+      var key = 'phase16_device_data';
+      var v = null;
+      try { v = localStorage.getItem(key); } catch (e) {}
+      if (!v) {
+        v = 'DISTTEST-' + Date.now().toString(36).toUpperCase();
+        try { localStorage.setItem(key, v); } catch (e) {}
+      }
+      document.getElementById('device-data').textContent = v;
+      document.getElementById('version').textContent = '1.0.0';
+    })();
+  </script>
+</body>
+</html>
